@@ -1,0 +1,100 @@
+<div class="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
+    <div class="bg-white  shadow-md rounded-md p-6 w-full max-w-md">
+        <h1 class="text-3xl text-center font-semibold mb-4 w-full">Add New Bug/Feature</h1>
+
+        <form class="" [formGroup]="reportForm" (ngSubmit)="onSubmit()">
+            <div class="mb-4">
+                <label for="title" class="block text-gray-700 font-medium mb-2">Title</label>
+                <input type="text" id="title"
+                    class="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-blue-300"
+                    formControlName="title" name="title" required>
+                <div *ngIf="reportForm.get('title')?.invalid && reportForm.get('title')?.touched" class=" text-red-600">
+                    Title is required (min 3 characters).
+                </div>
+            </div>
+            <!-- Type Selection -->
+            <div class="mb-4 ">
+                <label for="type" class="block text-gray-700 font-medium mb-2">Type</label>
+                <select id="type" class="border border-gray-300 w-full rounded-md p-2  focus:ring focus:ring-blue-300"
+                    formControlName="type" required>
+                    <option value="bug">Bug</option>
+                    <option value="feature">Feature</option>
+                </select>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-4 ">
+                <label for="description" class="block text-gray-700 font-medium mb-2">Description</label>
+                <textarea id="description"
+                    class="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-blue-300"
+                    formControlName="description" rows="4"></textarea>
+                <div *ngIf="reportForm.get('description')?.invalid && reportForm.get('description')?.touched"
+                    class="text-red-600">
+                    Description is required (min 10 characters).
+                </div>
+            </div>
+
+            <!-- Severity -->
+            <div class="mb-4 ">
+                <label for="severity" class="block text-gray-700 font-medium mb-2">Severity</label>
+                <select id="severity"
+                    class="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-blue-300"
+                    formControlName="severity" required>
+                    <option value="critical">Critical</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+            </div>
+
+            <!-- Last Occurrence Date (only for bugs) -->
+            <div class="mb-4 " *ngIf="reportForm.get('type')?.value === 'bug'">
+                <label for="lastOcurrence" class="block text-gray-700 font-medium mb-2">Last Occurrence
+                    Date</label>
+                <input type="date" id="lastOcurrence"
+                    class="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-blue-300"
+                    formControlName="lastOcurrence">
+                <div *ngIf="reportForm.get('lastOcurrence')?.invalid && reportForm.get('lastOcurrence')?.touched"
+                    class="text-red-600">
+                    Last Ocurrence Date is required for bugs.
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit"
+                class="bg-blue-600 flex justify-center text-white px-4 py-2 rounded-md w-full hover:bg-blue-700 focus:outline-none disabled:bg-blue-100 disabled:hover:bg-blue-100 "
+                [disabled]="reportForm.invalid">
+                @if (loader === false) {
+
+                {{ reportForm.get('type')?.value === 'bug' ? 'Submit Bug' : 'Submit Feature' }}
+                }@else {
+
+                <svg class="loader" viewBox="25 25 50 50">
+                    <circle r="20" cy="50" cx="50"></circle>
+                </svg>
+                }
+            </button>
+        </form>
+    </div>
+    @if(success){
+        <div class="bg-green-200 px-6 py-4 fixed bottom-0 my-4 rounded-md text-lg flex items-center mx-auto max-w-lg">
+            <svg viewBox="0 0 24 24" class="text-green-600 w-5 h-5 sm:w-5 sm:h-5 mr-3">
+                <path fill="currentColor"
+                    d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z">
+                </path>
+            </svg>
+            <span class="text-green-800">Your Report has been created.
+                <a class="underline" [routerLink]="['/']"  > View Reports</a>
+            </span>
+        </div>
+    }
+    @if(error){
+        <div class="bg-red-200 px-6 py-4 fixed bottom-0  my-4 rounded-md text-lg flex items-center mx-auto max-w-lg">
+            <svg viewBox="0 0 24 24" class="text-red-600 w-5 h-5 sm:w-5 sm:h-5 mr-3">
+                <path fill="currentColor"
+                    d="M11.983,0a12.206,12.206,0,0,0-8.51,3.653A11.8,11.8,0,0,0,0,12.207,11.779,11.779,0,0,0,11.8,24h.214A12.111,12.111,0,0,0,24,11.791h0A11.766,11.766,0,0,0,11.983,0ZM10.5,16.542a1.476,1.476,0,0,1,1.449-1.53h.027a1.527,1.527,0,0,1,1.523,1.47,1.475,1.475,0,0,1-1.449,1.53h-.027A1.529,1.529,0,0,1,10.5,16.542ZM11,12.5v-6a1,1,0,0,1,2,0v6a1,1,0,1,1-2,0Z">
+                </path>
+            </svg>
+            <span class="text-red-800"> There was an error creating your report please try again later. </span>
+        </div>
+    }
+</div>

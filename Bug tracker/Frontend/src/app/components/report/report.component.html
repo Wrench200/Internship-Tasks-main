@@ -1,0 +1,127 @@
+<div class="flow-root text-xl rounded-lg border border-gray-100 py-3 shadow-sm">
+    <dl class="-my-3 divide-y divide-gray-100 text-sm">
+        <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-gray-900">Title</dt>
+            <dd class="text-gray-700 sm:col-span-2">{{report.title}}</dd>
+        </div>
+
+        <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-gray-900">Type</dt>
+            <dd class="text-gray-700 sm:col-span-2"><span class="p-1 capitalize text-white rounded" [ngClass]="{
+                          'bg-red-500': report.type === 'bug',
+                          'bg-green-400': report.type === 'feature'}">
+                    {{ report.type }}
+                </span></dd>
+        </div>
+        <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-gray-900">Description</dt>
+            <dd class="text-gray-700 sm:col-span-2">
+                {{ report.description }}
+            </dd>
+        </div>
+        <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-gray-900">Severity</dt>
+            <dd class="text-gray-700 sm:col-span-2"><span class="p-1 capitalize text-white rounded" [ngClass]="{
+                          'bg-red-600': report.severity === 'critical',
+                          'bg-yellow-600': report.severity === 'medium',
+                          'bg-green-600': report.severity === 'low'
+                        }">{{ report.severity }}</span></dd>
+        </div>
+
+        <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-gray-900">Last Occurrence</dt>
+            <dd class="text-gray-700 sm:col-span-2">{{report.lastOcurrence | date}}</dd>
+        </div>
+        <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-gray-900">Resolved</dt>
+            <dd class="text-gray-700 sm:col-span-2 flex items-center gap-2">
+
+                @if(loader == true) {
+                    
+                    <svg class="loader" viewBox="25 25 50 50">
+                        <circle class="circle" r="20" cy="50" cx="50"></circle>
+                    </svg>
+                }@else {
+                    <div (click)="resolve()" class="checkbox-wrapper-31 group">
+                        <input [disabled]="report.resolved == true" [checked]="report.resolved" type="checkbox">
+                        <svg viewBox="0 0 35.6 35.6">
+                            <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
+                            <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                            <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                        </svg>
+    
+                    </div>
+
+                }
+                @if(report.resolved == false){
+                    <p class="italic">Click here to resolve the issue</p>
+                }
+            </dd>
+        </div>
+        <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-gray-900">Created At</dt>
+            <dd class="text-gray-700 sm:col-span-2">{{report.createdAt | date }}</dd>
+        </div>
+        <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-gray-900">Created By</dt>
+            <dd class="text-gray-700 sm:col-span-2">{{report.createdBy}}</dd>
+        </div>
+        @if(report.resolved == true) {
+    
+            <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+                <dt class="font-medium text-gray-900">Resolved At</dt>
+                <dd class="text-gray-700 sm:col-span-2">{{report.resolvedAt | date}}</dd>
+            </div>
+            <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+                <dt class="font-medium text-gray-900">Resolved By</dt>
+                <dd class="text-gray-700 sm:col-span-2">{{report.resolvedBy}}</dd>
+            </div>
+        }
+
+    </dl>
+    <div class="p-3 flex container justify-evenly">
+        <!-- <button (click)="resolve(report._id, 'njeik')"
+            class="text-slate-800 hover:text-white text-sm bg-white hover:bg-blue-500 border border-slate-200 rounded-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
+            <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                    </svg>
+            </span>
+            <span>Resolve</span>
+        </button> -->
+        <!-- <button
+            class="text-slate-800 hover:text-white text-sm bg-white hover:bg-red-500 border border-slate-200 rounded-lg font-medium px-4 py-2 inline-flex space-x-1 items-center">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                </svg>
+            </span>
+            <span>Delete</span>
+        </button> -->
+    </div>
+    @if(success){
+    <div class="bg-green-200 px-6 py-4 fixed bottom-0 my-4 rounded-md text-lg flex items-center mx-auto max-w-lg">
+        <svg viewBox="0 0 24 24" class="text-green-600 w-5 h-5 sm:w-5 sm:h-5 mr-3">
+            <path fill="currentColor"
+            d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z">
+        </path>
+        </svg>
+        <span class="text-green-800">Your Report has been resolved successfully.
+            <a class="underline" [routerLink]="['/']"> View Reports</a>
+        </span>
+    </div>
+    }
+    @if(error){
+    <div class="bg-red-200 px-6 py-4 fixed bottom-0  my-4 rounded-md text-lg flex items-center mx-auto max-w-lg">
+        <svg viewBox="0 0 24 24" class="text-red-600 w-5 h-5 sm:w-5 sm:h-5 mr-3">
+            <path fill="currentColor"
+                d="M11.983,0a12.206,12.206,0,0,0-8.51,3.653A11.8,11.8,0,0,0,0,12.207,11.779,11.779,0,0,0,11.8,24h.214A12.111,12.111,0,0,0,24,11.791h0A11.766,11.766,0,0,0,11.983,0ZM10.5,16.542a1.476,1.476,0,0,1,1.449-1.53h.027a1.527,1.527,0,0,1,1.523,1.47,1.475,1.475,0,0,1-1.449,1.53h-.027A1.529,1.529,0,0,1,10.5,16.542ZM11,12.5v-6a1,1,0,0,1,2,0v6a1,1,0,1,1-2,0Z">
+            </path>
+        </svg>
+        <span class="text-red-800"> There was an error resolving your report please try again later. </span>
+    </div>
+    }
+</div>
